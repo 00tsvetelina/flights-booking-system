@@ -1,10 +1,16 @@
 package com.flightbookingsystem.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +18,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,8 +31,9 @@ public class Ticket {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name="flight_id")
-    private Integer flightId;
+    @ManyToOne
+    @JoinColumn(name="flight_id")
+    private Flight flight;
 
     @Column(name="destination")
     private String destination;
@@ -45,8 +53,9 @@ public class Ticket {
     @Column(name="seat")
     private String seat;
 
-    @Column(name="user_id")
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 
     @Column(name="user_name")
     private String userName;
@@ -56,4 +65,12 @@ public class Ticket {
 
     @Column (name="promo_id")
     private Integer promoId;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name="promo_ticket",
+            joinColumns = @JoinColumn(name = "promo_id"),
+            inverseJoinColumns = @JoinColumn(name = "ticket_id")
+    )
+    private List<Ticket> tickets;
 }

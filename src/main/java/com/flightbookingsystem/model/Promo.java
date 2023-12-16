@@ -2,9 +2,14 @@ package com.flightbookingsystem.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +18,7 @@ import lombok.NoArgsConstructor;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.Period;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,4 +45,12 @@ public class Promo {
 
     @Column(name="single_use")
     private Boolean singleUse;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name="promo_ticket",
+            joinColumns = @JoinColumn(name="ticket_id"),
+            inverseJoinColumns = @JoinColumn(name="promo_id")
+    )
+    private List<Promo> promos;
 }
