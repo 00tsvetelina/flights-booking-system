@@ -32,6 +32,9 @@ public class Flight {
     @JoinColumn(name="plane_id")
     private Plane plane;
 
+    @Column(name="origin")
+    private String origin;
+
     @Column(name="destination")
     private String destination;
 
@@ -42,14 +45,11 @@ public class Flight {
     private LocalTime arrivalTime;
 
     @Column(name="delay")
-    private Duration delay;
-    //    Instant start = Instant.now();
-    //    Instant end = Instant.parse("2017-10-03T10:16:30.00Z");
-    //    Duration duration = Duration.between(start, end);
+    private Integer delay;
 
     @Column(name="price")
     private Integer price;
 
-
-
+    @Column(name="seatsCount")
+    private Integer seatsCount;
 }
