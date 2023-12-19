@@ -13,9 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,16 +38,16 @@ public class Flight {
     private String destination;
 
     @Column(name="departure_time")
-    private LocalTime departureTime;
+    private LocalDateTime departureTime;
 
     @Column(name="arrival_time")
-    private LocalTime arrivalTime;
+    private LocalDateTime arrivalTime;
 
     @Column(name="delay")
-    private Integer delay;
+    private Integer delayInMins;
 
     @Column(name="price")
-    private Integer price;
+    private Float price;
 
     @Column(name="seatsCount")
     private Integer seatsCount;

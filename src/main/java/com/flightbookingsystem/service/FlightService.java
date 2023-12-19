@@ -3,10 +3,11 @@ package com.flightbookingsystem.service;
 import com.flightbookingsystem.model.Flight;
 import com.flightbookingsystem.model.Ticket;
 import com.flightbookingsystem.repository.FlightRepository;
-import com.flightbookingsystem.repository.TicketRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,22 +26,31 @@ public class FlightService {
         this.ticketService = ticketService;
     }
 
-    public Flight getFlight(Integer flightId) {
-        return flightRepository.getById(flightId);
+    public List<Flight> getAllFlights() {
+        return flightRepository.getAllFlights();
     }
 
+    //find flight by flightId
+    public Flight getFlightById(Integer flightId) {
+        Optional<Flight> flight = flightRepository.getFlightById(flightId);
+        return flight.orElse(null);
+    }
+
+
+    // save flight
     public Flight addFlight(Flight flight) {
         return flightRepository.save(flight);
     }
 
-    public Flight editFlight(Flight updatedFlight) {
-        LocalTime depTime = updatedFlight.getDepartureTime();
-        LocalTime arrTime = updatedFlight.getArrivalTime();
+    // edit flight details
+    @Transactional
+    public Flight editFlight(Integer flightId, Flight updatedFlight) {
+        LocalDateTime depTime = updatedFlight.getDepartureTime();
+        LocalDateTime arrTime = updatedFlight.getArrivalTime();
 
         String origin = updatedFlight.getOrigin();
         String destination = updatedFlight.getDestination();
 
-        Integer flightId = updatedFlight.getId();
 
         if (origin.equals(destination) || !arrTime.isAfter(depTime)) {
             throw new IllegalArgumentException("Illegal arguments entered to <edit flight>.");
@@ -66,7 +76,7 @@ public class FlightService {
             flight.setOrigin(updatedFlight.getOrigin());
             flight.setDepartureTime(depTime);
             flight.setArrivalTime(arrTime);
-            flight.setDelay(updatedFlight.getDelay());
+            flight.setDelayInMins(updatedFlight.getDelayInMins());
             flight.setPrice(updatedFlight.getPrice());
             flight.setSeatsCount(seatsCount);
 
@@ -77,7 +87,9 @@ public class FlightService {
         return flightRepository.save(flight);
     }
 
-    public void deleteFlights(Integer flightId)  {
+    // check if tickets with flightId are already booked
+    // and if not, delete flight
+    public Flight deleteFlights(Integer flightId)  {
         Optional<Flight> result = flightRepository.getFlightById(flightId);
 
         if(result.isEmpty()) {
@@ -94,6 +106,7 @@ public class FlightService {
         }
 
         flightRepository.delete(flight);
+        return flight;
     }
 
 

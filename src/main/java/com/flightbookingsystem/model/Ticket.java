@@ -61,7 +61,7 @@ public class Ticket {
     private String userName;
 
     @Column(name="ticket_price")
-    private Integer ticketPrice;
+    private Float ticketPrice;
 
     @Column (name="promo_id")
     private Integer promoId;
