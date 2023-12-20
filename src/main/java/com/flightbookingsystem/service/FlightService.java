@@ -1,6 +1,7 @@
 package com.flightbookingsystem.service;
 
 import com.flightbookingsystem.model.Flight;
+import com.flightbookingsystem.model.Plane;
 import com.flightbookingsystem.model.Ticket;
 import com.flightbookingsystem.repository.FlightRepository;
 import jakarta.transaction.Transactional;
@@ -38,6 +39,7 @@ public class FlightService {
 
 
     // save flight
+    @Transactional
     public Flight addFlight(Flight flight) {
         return flightRepository.save(flight);
     }
@@ -55,16 +57,17 @@ public class FlightService {
         if (origin.equals(destination) || !arrTime.isAfter(depTime)) {
             throw new IllegalArgumentException("Illegal arguments entered to <edit flight>.");
         }
-
-        Optional<Flight> result = Optional.of(flightRepository.getById(flightId));
+        //CHECK
+        Optional<Flight> result = Optional.of(getFlightById(flightId));
         Flight flight;
 
         if(result.isPresent()) {
             flight = result.get();
-            Flight finalFlight = flight;
+            Flight ticketsToFlight = flight;
 
+            // add flight to ticket list
             List<Ticket> ticketList = ticketService.findAllByFlightIn(new ArrayList<>() {{
-                add(finalFlight);
+                add(ticketsToFlight);
             }});
 
             Integer seatsCount = flight.getSeatsCount();
@@ -89,6 +92,7 @@ public class FlightService {
 
     // check if tickets with flightId are already booked
     // and if not, delete flight
+    @Transactional
     public Flight deleteFlights(Integer flightId)  {
         Optional<Flight> result = flightRepository.getFlightById(flightId);
 
@@ -109,5 +113,8 @@ public class FlightService {
         return flight;
     }
 
+    public List<Flight> findAllByPlaneIn(List<Plane> planes) {
+        return flightRepository.findAllByPlaneIn(planes);
+    }
 
 }
