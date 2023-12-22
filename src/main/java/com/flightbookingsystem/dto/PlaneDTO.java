@@ -1,14 +1,21 @@
 package com.flightbookingsystem.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.flightbookingsystem.model.Flight;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
-@RequiredArgsConstructor
+import java.util.List;
+
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class PlaneDTO {
+public class PlaneDto {
 
     private Integer id;
+
     private String model;
-    private Flight flight;
+
+
 }

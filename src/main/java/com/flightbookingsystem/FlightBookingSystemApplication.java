@@ -1,6 +1,5 @@
 package com.flightbookingsystem;
 
-import com.flightbookingsystem.dto.FlightDTO;
 import com.flightbookingsystem.service.FlightService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,11 +13,5 @@ public class FlightBookingSystemApplication {
 		SpringApplication.run(FlightBookingSystemApplication.class, args);
 	}
 
-//	@Bean
-//	public CommandLineRunner commandLineRunner(FlightService flightService) {
-//		return runner -> {
-//
-//			createFlight
-//		}
-//	}
+
 }

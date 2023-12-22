@@ -1,5 +1,7 @@
 package com.flightbookingsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,7 +16,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
@@ -27,8 +28,5 @@ public class Plane {
 
     @Column(name="model")
     private String model;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "plane")
-    private List<Flight> flights;
 
 }

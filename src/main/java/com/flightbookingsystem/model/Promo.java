@@ -1,5 +1,8 @@
 package com.flightbookingsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,16 +16,22 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name="promo")
 public class Promo {
@@ -37,20 +46,17 @@ public class Promo {
     @Column(name="percent_off")
     private Integer percentOff;
 
-    @Column(name="duration")
-    private Duration duration;
-//    Instant start = Instant.now();
-//    Instant end = Instant.parse("2017-10-03T10:16:30.00Z");
-//    Duration duration = Duration.between(start, end);
+    @Column(name="duration_start")
+    private LocalDateTime durationStart;
+
+    @Column(name="duration_end")
+    private LocalDateTime durationEnd;
 
     @Column(name="single_use")
     private Boolean singleUse;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name="promo_ticket",
-            joinColumns = @JoinColumn(name="ticket_id"),
-            inverseJoinColumns = @JoinColumn(name="promo_id")
-    )
-    private List<Promo> promos;
+    @ManyToMany(mappedBy = "promos", fetch = FetchType.LAZY)
+    private List<Ticket> tickets;
+
+
 }

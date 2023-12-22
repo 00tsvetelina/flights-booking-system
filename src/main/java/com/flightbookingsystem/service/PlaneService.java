@@ -49,11 +49,6 @@ public class PlaneService {
 
             if(result.isPresent()){
                 plane = result.get();
-                Plane flightsToPlane = plane;
-
-                // add plane to flight list
-                List<Flight> planeList = flightService.findAllByPlaneIn(new ArrayList<>(){{add(flightsToPlane);}});
-
                 plane.setModel(updatedPlane.getModel());
             } else {
                 throw new IllegalArgumentException("No existing planes with id " + planeId);

@@ -1,12 +1,13 @@
 package com.flightbookingsystem.controller;
 
-import com.flightbookingsystem.dto.PlaneDTO;
+
+import com.flightbookingsystem.dto.PlaneDto;
+
 import com.flightbookingsystem.model.Plane;
 import com.flightbookingsystem.service.PlaneService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,54 +15,67 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
-@Controller
-@RequestMapping("api/admin/")
+@RestController
+@RequestMapping("api/admin/planes")
 public class PlaneController {
 
+    private final ModelMapper modelMapper = new ModelMapper();
     private final PlaneService planeService;
 
-    @Autowired
     public PlaneController(PlaneService planeService) {
         this.planeService = planeService;
     }
 
+
     // fetch all planes
-    @GetMapping(value = "/planes")
-    public ResponseEntity<List<Plane>> getAllPlanes() {
-        return ResponseEntity.ok(planeService.getAllPlanes());
+    @GetMapping
+    public ResponseEntity<List<PlaneDto>> getPlanes(){
+        List<PlaneDto> planeDtos = planeService.getAllPlanes()
+                .stream().map(plane -> modelMapper
+                        .map(plane, PlaneDto.class)
+                )
+                .toList();
+        return ResponseEntity.ok(planeDtos);
     }
 
     // fetch plane by id
-    @GetMapping(value = "planes/{planeId}")
-    public ResponseEntity<Plane> findPlaneById(@PathVariable("planeId") Integer planeId) {
+    @GetMapping(value = "/{planeId}")
+    public ResponseEntity<PlaneDto> getPlaneById(@PathVariable Integer planeId){
         Plane plane = planeService.getPlaneById(planeId);
-        return ResponseEntity.ok(plane);
+        PlaneDto planeDto = modelMapper.map(plane, PlaneDto.class);
+        return ResponseEntity.ok(planeDto);
     }
 
     // create plane
-    @PostMapping(value = "/planes")
-    public ResponseEntity<Plane> createPlane(@RequestBody Plane plane){
-        Plane createdPlane = planeService.addPlane(plane);
-        return ResponseEntity.ok(createdPlane);
+    @PostMapping
+    public ResponseEntity<PlaneDto> createPlane(@RequestBody PlaneDto planeDto) {
+        Plane entity = modelMapper.map(planeDto, Plane.class);
+        entity = planeService.addPlane(entity);
+        PlaneDto responseDto = modelMapper.map(entity, PlaneDto.class);
+        return new ResponseEntity(responseDto, HttpStatus.CREATED);
     }
 
+
     // edit plane
-    @PutMapping(value = "/planes/{planeId}")
-    public ResponseEntity<Plane> updatePlane(@PathVariable("planeId") Integer planeId,
-                                             @RequestBody Plane planeDTO) {
-        Plane updatedPlane = planeService.editPlane(planeId, planeDTO);
-        return ResponseEntity.ok(updatedPlane);
+    @PutMapping(value = "/{planeId}")
+    public ResponseEntity<PlaneDto> updatePlane(@PathVariable("planeId") Integer planeId,
+                                             @RequestBody PlaneDto planeDto) {
+        Plane entity = modelMapper.map(planeDto, Plane.class);
+        Plane updatedPlane = planeService.editPlane(planeId, entity);
+        PlaneDto responseDto = modelMapper.map(updatedPlane, PlaneDto.class);
+        return ResponseEntity.ok(responseDto);
     }
 
     // delete plane
-    @RequestMapping(value = "/airplane/{planeId}", method = RequestMethod.DELETE)
-    public ResponseEntity<Plane> deletePlane(@PathVariable("planeId") Integer planeId){
+    @RequestMapping(value = "/{planeId}", method = RequestMethod.DELETE)
+    public ResponseEntity<PlaneDto> deletePlane(@PathVariable("planeId") Integer planeId){
         Plane deletedPlane = planeService.deletePlane(planeId);
-        return ResponseEntity.ok(deletedPlane);
+        PlaneDto planeDto = modelMapper.map(deletedPlane, PlaneDto.class);
+        return ResponseEntity.ok(planeDto);
     }
+
 }

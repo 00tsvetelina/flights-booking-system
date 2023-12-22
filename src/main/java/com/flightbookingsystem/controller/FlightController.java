@@ -1,7 +1,9 @@
 package com.flightbookingsystem.controller;
+import com.flightbookingsystem.dto.FlightDto;
 import com.flightbookingsystem.model.Flight;
 import com.flightbookingsystem.service.FlightService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +16,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Controller
-@RequestMapping("api/admin")
-@ResponseStatus(HttpStatus.OK)
+@RestController
+@RequestMapping("api/admin/flights")
 public class FlightController {
 
+    private final ModelMapper modelMapper = new ModelMapper();
     private final FlightService flightService;
 
     @Autowired
@@ -30,27 +34,37 @@ public class FlightController {
     }
 
     // fetch all flights
-    @GetMapping(value = "/flights")
-    public ResponseEntity<List<Flight>> getAllFlights() {
-        return ResponseEntity.ok(flightService.getAllFlights());
+    @GetMapping
+    public List<FlightDto> getFlights(){
+        List<FlightDto> flightDtos = flightService.getAllFlights()
+                .stream().map(flight -> modelMapper
+                        .map(flight, FlightDto.class))
+                        .toList();
+        return flightDtos;
     }
 
     // fetch flight by id
-    @GetMapping(value = "/flights/{flightId}")
-    public ResponseEntity<Flight> findFlightById(@PathVariable("flightId") Integer flightId) {
+    @GetMapping(value = "/{flightId}")
+    public FlightDto findFlightById(@PathVariable("flightId") Integer flightId) {
+
         Flight flight = flightService.getFlightById(flightId);
-        return ResponseEntity.ok(flight);
+        FlightDto flightDto = modelMapper.map(flight, FlightDto.class);
+        return flightDto;
+//        return ResponseEntity.ok(flight);
     }
 
     // create flight
-    @PostMapping(value = "/flights")
-    public ResponseEntity<Flight> createFlight(@RequestBody Flight flight) {
-        Flight createdFlight = flightService.addFlight(flight);
-        return ResponseEntity.ok(createdFlight);
+    @PostMapping
+    public FlightDto createFlight(@RequestBody FlightDto flightDto) {
+        Flight entity = modelMapper.map(flightDto, Flight.class);
+        entity = flightService.addFlight(entity);
+        FlightDto responseDto = modelMapper.map(entity, FlightDto.class);
+        return responseDto;
+//        return ResponseEntity.ok(createdFlight);
     }
 
     // edit flight
-    @PutMapping(value = "/flights/{flightId}")
+    @PutMapping(value = "/{flightId}")
     public ResponseEntity<Flight> updateFlight(@PathVariable("flightId") Integer flightId,
                                                @RequestBody Flight flightDTO) {
 
@@ -59,7 +73,7 @@ public class FlightController {
         return ResponseEntity.ok(updatedFlight);
     }
 
-    @RequestMapping(value="/airline/{flightId}", method=RequestMethod.DELETE)
+    @RequestMapping(value="/{flightId}", method=RequestMethod.DELETE)
     public ResponseEntity<Flight> deleteFlight(@PathVariable("flightId") Integer flightId) {
         Flight deletedFlight = flightService.deleteFlights(flightId);
 

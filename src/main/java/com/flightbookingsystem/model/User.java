@@ -1,5 +1,6 @@
 package com.flightbookingsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,6 +31,9 @@ public class User {
     @Column(name="email")
     private String email;
 
+    @Column(name = "user_name")
+    private String userName;
+
     @Column(name="password")
     private String password;
 
@@ -39,6 +43,4 @@ public class User {
     @Column(name="role")
     private String role;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private List<Ticket> tickets;
 }

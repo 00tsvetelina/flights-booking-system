@@ -1,5 +1,8 @@
 package com.flightbookingsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,15 +17,21 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name="ticket")
 public class Ticket {
@@ -39,13 +48,13 @@ public class Ticket {
     private String destination;
 
     @Column(name="departure_time")
-    private LocalTime departureTime;
+    private LocalDateTime departureTime;
 
-    @Column(name = "arriving_at")
-    private String arrivingAt;
+    @Column(name = "origin")
+    private String origin;
 
     @Column(name="arriving_time")
-    private LocalTime arrivingTime;
+    private LocalDateTime arrivalTime;
 
     @Column(name="ticket_type")
     private String ticketType;
@@ -57,20 +66,15 @@ public class Ticket {
     @JoinColumn(name="user_id")
     private User user;
 
-    @Column(name="user_name")
-    private String userName;
-
     @Column(name="ticket_price")
     private Float ticketPrice;
 
-    @Column (name="promo_id")
-    private Integer promoId;
-
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name="promo_ticket",
-            joinColumns = @JoinColumn(name = "promo_id"),
-            inverseJoinColumns = @JoinColumn(name = "ticket_id")
+            joinColumns = @JoinColumn(name = "ticket_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "promo_id", referencedColumnName = "id")
     )
-    private List<Ticket> tickets;
+    private List<Promo> promos;
 }

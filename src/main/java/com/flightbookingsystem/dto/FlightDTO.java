@@ -1,22 +1,33 @@
 package com.flightbookingsystem.dto;
 
-import com.flightbookingsystem.model.Plane;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class FlightDTO {
+public class FlightDto {
 
-    private Integer id;
-    private Plane plane;
-    private String origin;
-    private String destination;
-    private LocalTime departureTime;
-    private LocalTime arrivalTime;
-    private Integer delay;
-    private Float price;
-    private Integer seatsCount;
+    private  Integer id;
+
+    private PlaneDto plane;
+
+    private  String origin;
+
+    private  String destination;
+
+    private  LocalDateTime departureTime;
+
+    private  LocalDateTime arrivalTime;
+
+    private  Integer delayInMins;
+
+    private  Float price;
+
+    private  Integer seatsCount;
+
 }
