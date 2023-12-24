@@ -10,6 +10,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,24 +35,31 @@ public class Flight {
     @JoinColumn(name="plane_id")
     private Plane plane;
 
+    @NotBlank
     @Column(name="origin")
     private String origin;
 
+    @NotBlank
     @Column(name="destination")
     private String destination;
 
+    @NotNull
     @Column(name="departure_time")
     private LocalDateTime departureTime;
 
+    @NotNull
     @Column(name="arrival_time")
     private LocalDateTime arrivalTime;
 
+    @NotNull
     @Column(name="delay")
     private Integer delayInMins;
 
+    @NotNull
     @Column(name="price")
     private Float price;
 
+    @NotNull
     @Column(name="seatsCount")
     private Integer seatsCount;
 

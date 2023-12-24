@@ -1,6 +1,7 @@
 package com.flightbookingsystem.repository;
 
 import com.flightbookingsystem.model.Promo;
+import com.flightbookingsystem.model.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,4 +18,5 @@ public interface PromoRepository extends JpaRepository<Promo, Integer> {
     // select all promos from db
     @Query(value = "select  * from promo", nativeQuery = true)
     List<Promo> getAllPromos();
+
 }

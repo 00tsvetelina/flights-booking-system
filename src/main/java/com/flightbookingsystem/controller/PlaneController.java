@@ -56,7 +56,7 @@ public class PlaneController {
         Plane entity = modelMapper.map(planeDto, Plane.class);
         entity = planeService.addPlane(entity);
         PlaneDto responseDto = modelMapper.map(entity, PlaneDto.class);
-        return new ResponseEntity(responseDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
 

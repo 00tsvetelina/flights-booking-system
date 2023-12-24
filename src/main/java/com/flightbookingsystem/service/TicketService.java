@@ -1,5 +1,6 @@
 package com.flightbookingsystem.service;
 
+import com.flightbookingsystem.error.InvalidInputException;
 import com.flightbookingsystem.model.Flight;
 import com.flightbookingsystem.model.Promo;
 import com.flightbookingsystem.model.Ticket;
@@ -30,8 +31,12 @@ public class TicketService {
 
     // get ticket by ticketId
     public Ticket getTicketById(Integer ticketId){
-        Optional<Ticket> ticket = ticketRepository.getTicketById(ticketId);
-        return ticket.orElse(null);
+        return ticketRepository.getTicketById(ticketId)
+                .orElseThrow(
+                        ()-> new InvalidInputException(
+                                String.format("Ticket with id: %d does not exist.", ticketId)
+                        )
+                );
     }
 
     // save ticket
@@ -60,6 +65,7 @@ public class TicketService {
             ticket.setPromos(updatedTicket.getPromos());
             ticket.setUser(updatedTicket.getUser());
             ticket.setTicketPrice(updatedTicket.getTicketPrice());
+            ticket.setPromos(updatedTicket.getPromos());
 
         } else {
             throw new IllegalArgumentException("No existing tickets with id " + ticketId);
@@ -73,8 +79,7 @@ public class TicketService {
     public Ticket deleteTicket(Integer ticketId) {
         Optional<Ticket> result = ticketRepository.getTicketById(ticketId);
         if(result.isEmpty()){
-            throw new RuntimeException(String.format("Object with id: %d cannot be found", ticketId));
-            //TODO Change with custom exception
+            throw  new InvalidInputException(String.format("Object with id: %d cannot be found", ticketId));
         }
 
         Ticket ticket = result.get();
@@ -88,8 +93,8 @@ public class TicketService {
         return ticketRepository.findAllByFlightIn(flights);
     }
 
-    // find all tickets with promos
-    public List<Ticket> findAllByPromoIn(ArrayList<Promo> promos) {
-        return ticketRepository.findAllByTicketsIn(promos);
-    }
+//    // find all tickets with promos
+//    public List<Ticket> findAllByPromoIn(List<Promo> promos) {
+//        return ticketRepository.findAllByTicketIn(promos);
+//    }
 }

@@ -1,11 +1,13 @@
 package com.flightbookingsystem.service;
 
+import com.flightbookingsystem.error.InvalidInputException;
 import com.flightbookingsystem.model.Flight;
 import com.flightbookingsystem.model.Plane;
 import com.flightbookingsystem.model.Ticket;
 import com.flightbookingsystem.repository.FlightRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -33,8 +35,12 @@ public class FlightService {
 
     //find flight by flightId
     public Flight getFlightById(Integer flightId) {
-        Optional<Flight> flight = flightRepository.getFlightById(flightId);
-        return flight.orElse(null);
+        return flightRepository.getFlightById(flightId)
+                .orElseThrow(
+                        ()-> new InvalidInputException(
+                                String.format("Flight with id: %d does not exist.", flightId)
+                        )
+                );
     }
 
 
@@ -97,8 +103,7 @@ public class FlightService {
         Optional<Flight> result = flightRepository.getFlightById(flightId);
 
         if(result.isEmpty()) {
-            throw new RuntimeException(String.format("Object with id: %d cannot be found", flightId));
-            //TODO Change with custom exception
+            throw new InvalidInputException(String.format("Object with id: %d cannot be found", flightId));
         }
 
         Flight flight = result.get();
@@ -114,6 +119,7 @@ public class FlightService {
     }
 
     public List<Flight> findAllByPlaneIn(List<Plane> planes) {
+
         return flightRepository.findAllByPlaneIn(planes);
     }
 

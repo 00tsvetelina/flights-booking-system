@@ -15,6 +15,9 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -44,21 +47,27 @@ public class Ticket {
     @JoinColumn(name="flight_id")
     private Flight flight;
 
+    @NotBlank
     @Column(name="destination")
     private String destination;
 
+    @NotNull
     @Column(name="departure_time")
     private LocalDateTime departureTime;
 
+    @NotBlank
     @Column(name = "origin")
     private String origin;
 
+    @NotNull
     @Column(name="arriving_time")
     private LocalDateTime arrivalTime;
 
+    @NotBlank
     @Column(name="ticket_type")
     private String ticketType;
 
+    @NotBlank
     @Column(name="seat")
     private String seat;
 
@@ -66,11 +75,12 @@ public class Ticket {
     @JoinColumn(name="user_id")
     private User user;
 
+    @NotNull
     @Column(name="ticket_price")
     private Float ticketPrice;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
             name="promo_ticket",
             joinColumns = @JoinColumn(name = "ticket_id", referencedColumnName = "id"),

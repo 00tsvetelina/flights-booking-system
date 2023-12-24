@@ -1,5 +1,6 @@
 package com.flightbookingsystem.service;
 
+import com.flightbookingsystem.error.InvalidInputException;
 import com.flightbookingsystem.model.User;
 import com.flightbookingsystem.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -27,8 +28,10 @@ public class UserService {
 
     // get user by userId
     public User getUserById(Integer userId){
-        Optional<User> user = userRepository.getUserById(userId);
-        return user.orElse(null);
+        return userRepository.getUserById(userId)
+                .orElseThrow(()->new InvalidInputException(
+                        String.format("User with id: %d does not exist.", userId)
+                ));
     }
 
     // save user
@@ -63,8 +66,7 @@ public class UserService {
     public User deleteUser(Integer userId){
         Optional<User> result = userRepository.getUserById(userId);
         if(result.isEmpty()) {
-            throw new RuntimeException(String.format("Object with id: %d cannot be found", userId));
-            //TODO Change with custom exception
+            throw new InvalidInputException(String.format("Object with id: %d cannot be found", userId));
         }
 
         User user = result.get();

@@ -5,6 +5,7 @@ import com.flightbookingsystem.service.FlightService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -35,32 +36,30 @@ public class FlightController {
 
     // fetch all flights
     @GetMapping
-    public List<FlightDto> getFlights(){
+    public ResponseEntity<List<FlightDto>> getFlights(){
         List<FlightDto> flightDtos = flightService.getAllFlights()
                 .stream().map(flight -> modelMapper
                         .map(flight, FlightDto.class))
                         .toList();
-        return flightDtos;
+        return ResponseEntity.ok(flightDtos);
     }
 
     // fetch flight by id
     @GetMapping(value = "/{flightId}")
-    public FlightDto findFlightById(@PathVariable("flightId") Integer flightId) {
+    public ResponseEntity<FlightDto> findFlightById(@PathVariable("flightId") Integer flightId) {
 
         Flight flight = flightService.getFlightById(flightId);
         FlightDto flightDto = modelMapper.map(flight, FlightDto.class);
-        return flightDto;
-//        return ResponseEntity.ok(flight);
+        return ResponseEntity.ok(flightDto);
     }
 
     // create flight
     @PostMapping
-    public FlightDto createFlight(@RequestBody FlightDto flightDto) {
+    public ResponseEntity<FlightDto> createFlight(@RequestBody FlightDto flightDto) {
         Flight entity = modelMapper.map(flightDto, Flight.class);
         entity = flightService.addFlight(entity);
         FlightDto responseDto = modelMapper.map(entity, FlightDto.class);
-        return responseDto;
-//        return ResponseEntity.ok(createdFlight);
+        return ResponseEntity.ok(responseDto);
     }
 
     // edit flight

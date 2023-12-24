@@ -1,5 +1,6 @@
 package com.flightbookingsystem.service;
 
+import com.flightbookingsystem.error.InvalidInputException;
 import com.flightbookingsystem.model.Promo;
 import com.flightbookingsystem.model.Ticket;
 import com.flightbookingsystem.repository.PromoRepository;
@@ -31,8 +32,10 @@ public class PromoService {
 
     //get promo by promoId
     public Promo getPromoById(Integer promoId){
-        Optional<Promo> promo = promoRepository.getPromoById(promoId);
-        return promo.orElse(null);
+        return promoRepository.getPromoById(promoId)
+                .orElseThrow(
+                        ()->new InvalidInputException(
+                                String.format("Promo with id: %d does not exist.", promoId)));
     }
 
     // save promo
@@ -53,6 +56,7 @@ public class PromoService {
             promo.setDurationStart(updatedPromo.getDurationStart());
             promo.setDurationEnd(updatedPromo.getDurationEnd());
             promo.setSingleUse(updatedPromo.getSingleUse());
+            promo.setTickets(updatedPromo.getTickets());
 
         } else {
             throw new IllegalArgumentException("No existing promos with id " + promoId);
@@ -66,12 +70,12 @@ public class PromoService {
     public Promo deletePromo(Integer promoId) {
         Optional<Promo> result = promoRepository.getPromoById(promoId);
         if(result.isEmpty()) {
-            throw new RuntimeException(String.format("Object with id: %d cannot be found", promoId));
-            //TODO Change with custom exception
+            throw new InvalidInputException(String.format("Object with id: %d cannot be found", promoId));
         }
 
         Promo promo = result.get();
         promoRepository.delete(promo);
         return promo;
     }
+
 }

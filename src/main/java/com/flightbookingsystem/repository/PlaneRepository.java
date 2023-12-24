@@ -1,6 +1,6 @@
 package com.flightbookingsystem.repository;
 
-import com.flightbookingsystem.model.Flight;
+
 import com.flightbookingsystem.model.Plane;
 
 import org.springframework.data.jpa.repository.JpaRepository;

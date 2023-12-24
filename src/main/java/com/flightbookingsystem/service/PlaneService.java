@@ -1,5 +1,7 @@
 package com.flightbookingsystem.service;
 
+import com.flightbookingsystem.error.IllegalArgumentException;
+import com.flightbookingsystem.error.InvalidInputException;
 import com.flightbookingsystem.model.Flight;
 import com.flightbookingsystem.model.Plane;
 import com.flightbookingsystem.repository.FlightRepository;
@@ -31,8 +33,12 @@ public class PlaneService {
 
     // get plane by planeId
     public Plane getPlaneById(Integer planeId) {
-        Optional<Plane> plane = planeRepository.getPlanesById(planeId);
-        return plane.orElse(null);
+       return planeRepository.getPlanesById(planeId)
+            .orElseThrow(
+                    () -> new InvalidInputException(
+                            String.format("Plane with id: %d does not exist.", planeId)
+                    )
+            );
     }
 
     // save plane
@@ -43,7 +49,6 @@ public class PlaneService {
     // edit plane
     @Transactional
     public Plane editPlane(Integer planeId, Plane updatedPlane){
-        //CHECK
             Optional<Plane> result = Optional.of(getPlaneById(planeId));
             Plane plane;
 
@@ -63,8 +68,7 @@ public class PlaneService {
     public Plane deletePlane(Integer planeId) {
         Optional<Plane> result = planeRepository.getPlanesById(planeId);
         if(result.isEmpty()) {
-            throw new RuntimeException(String.format("Object with id: %d cannot be found", planeId));
-            //TODO Change with custom exception
+            throw new InvalidInputException(String.format("Object with id: %d cannot be found", planeId));
         }
 
         Plane plane = result.get();

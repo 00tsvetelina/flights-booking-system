@@ -1,6 +1,7 @@
 package com.flightbookingsystem.repository;
 
 import com.flightbookingsystem.model.Flight;
+import com.flightbookingsystem.model.Plane;
 import com.flightbookingsystem.model.Promo;
 import com.flightbookingsystem.model.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,6 +26,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Integer> {
     // find all tickets for flights
     List<Ticket> findAllByFlightIn(List<Flight> flights);
 
-    // find all tickets with promos
-    List<Ticket> findAllByTicketsIn(ArrayList<Promo> promos);
+//    // find all tickets with promos
+//    List<Ticket> findAllByTicketIn(List<Promo> promos);
 }

@@ -3,6 +3,7 @@ package com.flightbookingsystem.repository;
 import com.flightbookingsystem.model.Flight;
 import com.flightbookingsystem.model.Plane;
 import com.flightbookingsystem.model.Ticket;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
