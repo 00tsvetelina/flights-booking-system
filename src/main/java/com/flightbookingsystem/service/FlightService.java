@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -53,17 +54,7 @@ public class FlightService {
     // edit flight details
     @Transactional
     public Flight editFlight(Integer flightId, Flight updatedFlight) {
-        LocalDateTime depTime = updatedFlight.getDepartureTime();
-        LocalDateTime arrTime = updatedFlight.getArrivalTime();
 
-        String origin = updatedFlight.getOrigin();
-        String destination = updatedFlight.getDestination();
-
-
-        if (origin.equals(destination) || !arrTime.isAfter(depTime)) {
-            throw new IllegalArgumentException("Illegal arguments entered to <edit flight>.");
-        }
-        //CHECK
         Optional<Flight> result = Optional.of(getFlightById(flightId));
         Flight flight;
 
@@ -83,8 +74,7 @@ public class FlightService {
 
             flight.setDestination(updatedFlight.getDestination());
             flight.setOrigin(updatedFlight.getOrigin());
-            flight.setDepartureTime(depTime);
-            flight.setArrivalTime(arrTime);
+            flight.setDepartureTime(updatedFlight.getDepartureTime());
             flight.setDelayInMins(updatedFlight.getDelayInMins());
             flight.setPrice(updatedFlight.getPrice());
             flight.setSeatsCount(seatsCount);

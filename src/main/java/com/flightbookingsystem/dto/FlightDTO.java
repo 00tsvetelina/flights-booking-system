@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @Data
 public class FlightDto {
 
-    private  Integer id;
+    private Integer id;
 
     private PlaneDto plane;
 
@@ -20,9 +21,7 @@ public class FlightDto {
 
     private  String destination;
 
-    private  LocalDateTime departureTime;
-
-    private  LocalDateTime arrivalTime;
+    private LocalDate departureTime;
 
     private  Integer delayInMins;
 
