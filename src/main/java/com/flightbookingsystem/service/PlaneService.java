@@ -55,6 +55,7 @@ public class PlaneService {
             if(result.isPresent()){
                 plane = result.get();
                 plane.setModel(updatedPlane.getModel());
+                plane.setFlights(updatedPlane.getFlights());
             } else {
                 throw new IllegalArgumentException("No existing planes with id " + planeId);
             }

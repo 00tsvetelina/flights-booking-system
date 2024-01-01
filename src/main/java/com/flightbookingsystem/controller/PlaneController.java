@@ -35,8 +35,8 @@ public class PlaneController {
     @GetMapping
     public ResponseEntity<List<PlaneDto>> getPlanes(){
         List<PlaneDto> planeDtos = planeService.getAllPlanes()
-                .stream().map(plane -> modelMapper
-                        .map(plane, PlaneDto.class)
+                .stream().map(
+                        plane -> modelMapper.map(plane, PlaneDto.class)
                 )
                 .toList();
         return ResponseEntity.ok(planeDtos);

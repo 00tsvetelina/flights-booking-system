@@ -72,6 +72,7 @@ public class FlightService {
                 throw new IllegalArgumentException("Seats count capacity is less than requested.");
             }
 
+            flight.setPlane(updatedFlight.getPlane());
             flight.setDestination(updatedFlight.getDestination());
             flight.setOrigin(updatedFlight.getOrigin());
             flight.setDepartureTime(updatedFlight.getDepartureTime());
@@ -111,6 +112,10 @@ public class FlightService {
     public List<Flight> findAllByPlaneIn(List<Plane> planes) {
 
         return flightRepository.findAllByPlaneIn(planes);
+    }
+
+    public List<Flight> findAllByPlaneId(Integer planeId) {
+        return flightRepository.findAllByPlane_Id(planeId);
     }
 
 }

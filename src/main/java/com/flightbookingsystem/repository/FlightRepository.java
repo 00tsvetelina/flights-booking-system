@@ -20,4 +20,5 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
 
     List<Flight> findAllByPlaneIn(List<Plane> planes);
 
+    List<Flight> findAllByPlane_Id(Integer planeId);
 }

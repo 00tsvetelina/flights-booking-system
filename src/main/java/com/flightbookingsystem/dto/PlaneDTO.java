@@ -17,5 +17,6 @@ public class PlaneDto {
 
     private String model;
 
+    private List<Flight> flights;
 
 }
