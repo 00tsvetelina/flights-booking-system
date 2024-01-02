@@ -59,8 +59,6 @@ public class TicketService {
             ticket.setDestination(updatedTicket.getDestination());
             ticket.setDepartureTime(updatedTicket.getDepartureTime());
             ticket.setOrigin(updatedTicket.getOrigin());
-            ticket.setArrivalTime(updatedTicket.getArrivalTime());
-            ticket.setTicketType(updatedTicket.getTicketType());
             ticket.setSeat(updatedTicket.getSeat());
             ticket.setPromos(updatedTicket.getPromos());
             ticket.setUser(updatedTicket.getUser());

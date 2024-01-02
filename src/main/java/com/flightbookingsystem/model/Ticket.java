@@ -53,19 +53,11 @@ public class Ticket {
 
     @NotNull
     @Column(name="departure_time")
-    private LocalDateTime departureTime;
+    private LocalDate departureTime;
 
     @NotBlank
     @Column(name = "origin")
     private String origin;
-
-    @NotNull
-    @Column(name="arriving_time")
-    private LocalDateTime arrivalTime;
-
-    @NotBlank
-    @Column(name="ticket_type")
-    private String ticketType;
 
     @NotBlank
     @Column(name="seat")

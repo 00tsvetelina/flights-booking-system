@@ -28,6 +28,7 @@ import lombok.ToString;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
@@ -54,11 +55,11 @@ public class Promo {
 
     @NotNull
     @Column(name="duration_start")
-    private LocalDateTime durationStart;
+    private LocalDate durationStart;
 
     @NotNull
     @Column(name="duration_end")
-    private LocalDateTime durationEnd;
+    private LocalDate durationEnd;
 
     @AssertTrue
     @Column(name="single_use")
