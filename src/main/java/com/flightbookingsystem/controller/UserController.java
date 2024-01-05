@@ -8,16 +8,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/admin/users")
@@ -51,7 +50,7 @@ public class UserController {
 
     //create a user
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
         User entity = modelMapper.map(userDto, User.class);
         entity = userService.addUser(entity);
         UserDto responseDto = modelMapper.map(entity, UserDto.class);
@@ -61,7 +60,7 @@ public class UserController {
     // edit user
     @PutMapping(value = "/{userId}")
     public ResponseEntity<UserDto> editUser(@PathVariable ("userId") Integer userId,
-                                            @RequestBody UserDto userDto){
+                                            @Valid @RequestBody UserDto userDto){
         User entity = modelMapper.map(userDto, User.class);
         User updatedUser = userService.editUser(userId, entity);
         UserDto responseDto = modelMapper.map(updatedUser, UserDto.class);
@@ -74,5 +73,19 @@ public class UserController {
         User deletedUser = userService.deleteUser(userId);
         UserDto userDto = modelMapper.map(deletedUser, UserDto.class);
         return ResponseEntity.ok(userDto);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationException(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+
+        ex.getBindingResult().getAllErrors().forEach((error)->{
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+
+        return errors;
     }
 }

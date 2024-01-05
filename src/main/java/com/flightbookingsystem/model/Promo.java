@@ -33,10 +33,8 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name="promo")
 public class Promo {
@@ -45,23 +43,18 @@ public class Promo {
     @Column(name="id")
     private Integer id;
 
-    @NotBlank
     @Column(name="promo_code")
     private String promoCode;
 
-    @NotNull
     @Column(name="percent_off")
     private Integer percentOff;
 
-    @NotNull
     @Column(name="duration_start")
     private LocalDate durationStart;
 
-    @NotNull
     @Column(name="duration_end")
     private LocalDate durationEnd;
 
-    @AssertTrue
     @Column(name="single_use")
     private Boolean singleUse;
 

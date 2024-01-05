@@ -30,7 +30,6 @@ public class Plane {
     @Column(name="id")
     private Integer id;
 
-    @NotBlank
     @Column(name="model")
     private String model;
 

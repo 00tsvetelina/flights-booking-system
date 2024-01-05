@@ -50,7 +50,7 @@ public class UserService {
             user = result.get();
 
             user.setUserName(updatedUser.getUserName());
-            user.setRole(updatedUser.getRole());
+            user.setRoles(updatedUser.getRoles());
             user.setEmail(updatedUser.getEmail());
             user.setPassword(updatedUser.getPassword());
             user.setIsBanned(updatedUser.getIsBanned());

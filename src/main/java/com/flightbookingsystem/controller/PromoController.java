@@ -52,6 +52,7 @@ public class PromoController {
         return ResponseEntity.ok(promoDto);
     }
 
+
     // create promo
     @PostMapping
     public ResponseEntity<PromoDto> createPromo(@RequestBody PromoDto promoDto) {

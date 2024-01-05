@@ -15,13 +15,14 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
@@ -36,27 +37,21 @@ public class Flight {
     @JoinColumn(name="plane_id")
     private Plane plane;
 
-    @NotBlank
     @Column(name="origin")
     private String origin;
 
-    @NotBlank
     @Column(name="destination")
     private String destination;
 
-    @NotNull
     @Column(name="departure_time")
     private LocalDate departureTime;
 
-    @NotNull
     @Column(name="delay")
     private Integer delayInMins;
 
-    @NotNull
     @Column(name="price")
     private Float price;
 
-    @NotNull
     @Column(name="seatsCount")
     private Integer seatsCount;
 

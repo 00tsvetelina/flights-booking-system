@@ -31,10 +31,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name="ticket")
 public class Ticket {
@@ -47,19 +45,15 @@ public class Ticket {
     @JoinColumn(name="flight_id")
     private Flight flight;
 
-    @NotBlank
     @Column(name="destination")
     private String destination;
 
-    @NotNull
     @Column(name="departure_time")
     private LocalDate departureTime;
 
-    @NotBlank
     @Column(name = "origin")
     private String origin;
 
-    @NotBlank
     @Column(name="seat")
     private String seat;
 
@@ -67,7 +61,6 @@ public class Ticket {
     @JoinColumn(name="user_id")
     private User user;
 
-    @NotNull
     @Column(name="ticket_price")
     private Float ticketPrice;
 

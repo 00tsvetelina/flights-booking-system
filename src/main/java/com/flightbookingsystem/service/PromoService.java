@@ -53,7 +53,6 @@ public class PromoService {
         if(result.isPresent()){
             promo = result.get();
             promo.setPromoCode(updatedPromo.getPromoCode());
-            promo.setDurationStart(updatedPromo.getDurationStart());
             promo.setDurationEnd(updatedPromo.getDurationEnd());
             promo.setSingleUse(updatedPromo.getSingleUse());
             promo.setTickets(updatedPromo.getTickets());
