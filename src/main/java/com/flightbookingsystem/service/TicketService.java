@@ -1,15 +1,12 @@
 package com.flightbookingsystem.service;
 
-import com.flightbookingsystem.error.InvalidInputException;
 import com.flightbookingsystem.model.Flight;
-import com.flightbookingsystem.model.Promo;
 import com.flightbookingsystem.model.Ticket;
 import com.flightbookingsystem.repository.TicketRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +30,7 @@ public class TicketService {
     public Ticket getTicketById(Integer ticketId){
         return ticketRepository.getTicketById(ticketId)
                 .orElseThrow(
-                        ()-> new InvalidInputException(
+                        ()-> new IllegalArgumentException(
                                 String.format("Ticket with id: %d does not exist.", ticketId)
                         )
                 );
@@ -77,7 +74,7 @@ public class TicketService {
     public Ticket deleteTicket(Integer ticketId) {
         Optional<Ticket> result = ticketRepository.getTicketById(ticketId);
         if(result.isEmpty()){
-            throw  new InvalidInputException(String.format("Object with id: %d cannot be found", ticketId));
+            throw  new IllegalArgumentException(String.format("Object with id: %d cannot be found", ticketId));
         }
 
         Ticket ticket = result.get();

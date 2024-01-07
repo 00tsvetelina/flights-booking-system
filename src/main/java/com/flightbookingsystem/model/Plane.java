@@ -30,7 +30,7 @@ public class Plane {
     @Column(name="id")
     private Integer id;
 
-    @Column(name="model")
+    @Column(name="model", nullable = false)
     private String model;
 
     @JsonIgnore

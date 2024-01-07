@@ -37,22 +37,22 @@ public class Flight {
     @JoinColumn(name="plane_id")
     private Plane plane;
 
-    @Column(name="origin")
+    @Column(name="origin", nullable = false)
     private String origin;
 
-    @Column(name="destination")
+    @Column(name="destination", nullable = false)
     private String destination;
 
-    @Column(name="departure_time")
+    @Column(name="departure_time",nullable = false)
     private LocalDate departureTime;
 
-    @Column(name="delay")
+    @Column(name="delay", nullable = false)
     private Integer delayInMins;
 
-    @Column(name="price")
+    @Column(name="price", nullable = false)
     private Float price;
 
-    @Column(name="seatsCount")
+    @Column(name="seatsCount", nullable = false)
     private Integer seatsCount;
 
 }

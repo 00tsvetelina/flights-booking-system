@@ -1,10 +1,8 @@
 package com.flightbookingsystem.service;
 
 import com.flightbookingsystem.error.IllegalArgumentException;
-import com.flightbookingsystem.error.InvalidInputException;
 import com.flightbookingsystem.model.Flight;
 import com.flightbookingsystem.model.Plane;
-import com.flightbookingsystem.repository.FlightRepository;
 import com.flightbookingsystem.repository.PlaneRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +33,7 @@ public class PlaneService {
     public Plane getPlaneById(Integer planeId) {
        return planeRepository.getPlanesById(planeId)
             .orElseThrow(
-                    () -> new InvalidInputException(
+                    () -> new IllegalArgumentException(
                             String.format("Plane with id: %d does not exist.", planeId)
                     )
             );
@@ -69,7 +67,7 @@ public class PlaneService {
     public Plane deletePlane(Integer planeId) {
         Optional<Plane> result = planeRepository.getPlanesById(planeId);
         if(result.isEmpty()) {
-            throw new InvalidInputException(String.format("Object with id: %d cannot be found", planeId));
+            throw new IllegalArgumentException(String.format("Object with id: %d cannot be found", planeId));
         }
 
         Plane plane = result.get();

@@ -43,19 +43,19 @@ public class Promo {
     @Column(name="id")
     private Integer id;
 
-    @Column(name="promo_code")
+    @Column(name="promo_code", nullable = false)
     private String promoCode;
 
-    @Column(name="percent_off")
+    @Column(name="percent_off",nullable = false)
     private Integer percentOff;
 
-    @Column(name="duration_start")
+    @Column(name="duration_start",nullable = false)
     private LocalDate durationStart;
 
-    @Column(name="duration_end")
+    @Column(name="duration_end", nullable = false)
     private LocalDate durationEnd;
 
-    @Column(name="single_use")
+    @Column(name="single_use",nullable = false)
     private Boolean singleUse;
 
     @ManyToMany(mappedBy = "promos")

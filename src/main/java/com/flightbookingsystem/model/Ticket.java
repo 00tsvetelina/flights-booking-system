@@ -42,26 +42,26 @@ public class Ticket {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name="flight_id")
+    @JoinColumn(name="flight_id", nullable = false)
     private Flight flight;
 
-    @Column(name="destination")
+    @Column(name="destination", nullable = false)
     private String destination;
 
-    @Column(name="departure_time")
+    @Column(name="departure_time", nullable = false)
     private LocalDate departureTime;
 
-    @Column(name = "origin")
+    @Column(name = "origin", nullable = false)
     private String origin;
 
-    @Column(name="seat")
+    @Column(name="seat", nullable = false)
     private String seat;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="user_id", nullable = false)
     private User user;
 
-    @Column(name="ticket_price")
+    @Column(name="ticket_price", nullable = false)
     private Float ticketPrice;
 
     @JsonIgnore
