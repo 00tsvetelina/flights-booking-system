@@ -17,17 +17,20 @@ public class User {
     @Column(name="id")
     private Integer id;
 
+    @Column(name = "full_name", nullable = false)
+    private String firstAndLastNames;
+
     @Column(name="email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "user_name", nullable = false)
+    @Column(name = "user_name", nullable = false, unique = true)
     private String userName;
 
     @Column(name="password", unique = true, nullable = false)
     private String password;
 
-    @Column(name="is_banned", columnDefinition = "boolean default false")
-    private Boolean isBanned;
+    @Column(name="is_enabled", columnDefinition = "boolean default true")
+    private Boolean isEnabled;
 
     @Column(name="role")
     private List<String> roles;

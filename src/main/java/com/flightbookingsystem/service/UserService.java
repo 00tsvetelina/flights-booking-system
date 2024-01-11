@@ -1,22 +1,29 @@
 package com.flightbookingsystem.service;
 
+import com.flightbookingsystem.dto.MyUserPrincipal;
 import com.flightbookingsystem.model.User;
 import com.flightbookingsystem.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // get all users
@@ -33,10 +40,17 @@ public class UserService {
                 ));
     }
 
+    // get user by email
+
     // save user
     @Transactional
     public User addUser(User user){
-        return userRepository.save(user);
+        if(userRepository.findByuserName(user.getUserName()).isPresent()){
+            throw new IllegalArgumentException("User with this username already exists");
+        }
+            user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+            return userRepository.save(user);
+
     }
 
     // edit user
@@ -48,11 +62,12 @@ public class UserService {
         if(result.isPresent()){
             user = result.get();
 
+            user.setFirstAndLastNames(updatedUser.getFirstAndLastNames());
             user.setUserName(updatedUser.getUserName());
             user.setRoles(updatedUser.getRoles());
             user.setEmail(updatedUser.getEmail());
             user.setPassword(updatedUser.getPassword());
-            user.setIsBanned(updatedUser.getIsBanned());
+            user.setIsEnabled(updatedUser.getIsEnabled());
         } else {
             throw  new IllegalArgumentException("No existing users with id " + userId);
         }
@@ -71,5 +86,14 @@ public class UserService {
         User user = result.get();
         userRepository.delete(user);
         return user;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return this.userRepository.findByuserName(username) // find user and db
+                .map(MyUserPrincipal::new) // if found, wrap the returned user instance in a MyUserPrincipal instance
+                .orElseThrow(()-> new UsernameNotFoundException(String.format("Username: %s cannot be found", username))
+                        // or else throw new UNFE and format it into string value
+                );
     }
 }

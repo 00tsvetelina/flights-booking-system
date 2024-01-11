@@ -2,18 +2,52 @@ package com.flightbookingsystem.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Arrays;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
+
+    private String baseUrl = "/api/admin";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        return http
+                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+                        .requestMatchers(HttpMethod.GET, this.baseUrl).permitAll()
+                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/flights").permitAll()
+                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/flights/**").hasAuthority("ROLE_admin")
+                        .requestMatchers(HttpMethod.POST, this.baseUrl + "/add-flight").hasAuthority("ROLE_admin")
+                        .requestMatchers(HttpMethod.PUT, this.baseUrl + "/edit-flight/**").hasAuthority("ROLE_admin")
+                        .requestMatchers(HttpMethod.DELETE, this.baseUrl + "/flights/**").hasAuthority("ROLE_admin")
+                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/planes").hasAuthority("ROLE_admin")
+                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/planes/**").hasAuthority("ROLE_admin")
+                        .requestMatchers(HttpMethod.POST, this.baseUrl + "/add-plane").hasAuthority("ROLE_admin")
+                        .requestMatchers(HttpMethod.PUT, this.baseUrl + "/edit-plane/**").hasAuthority("ROLE_admin")
+                        .requestMatchers(HttpMethod.DELETE, this.baseUrl + "/planes/**").hasAuthority("ROLE_admin")
+//                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/promos").hasAuthority("ROLE_admin")
+                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/promos/**").hasAuthority("ROLE_admin")
+                        .requestMatchers(HttpMethod.POST, this.baseUrl + "/add-promo").hasAuthority("ROLE_admin")
+                        .requestMatchers(HttpMethod.PUT, this.baseUrl + "/edit-promo/**").hasAuthority("ROLE_admin")
+                        .requestMatchers(HttpMethod.DELETE, this.baseUrl + "/promos/**").hasAuthority("ROLE_admin")
+                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/users").hasAuthority("ROLE_admin")
+                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/users/**").hasAuthority("ROLE_admin")
+
+                        .anyRequest().authenticated()
+                )
                 .cors(cors -> cors
                         .configurationSource(request -> {
                             CorsConfiguration config = new CorsConfiguration();
@@ -24,9 +58,14 @@ public class SecurityConfig {
                             return config;
                         })
                 )
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-                .csrf(csrf -> csrf.disable());
-
-        return http.build();
+                .csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(Customizer.withDefaults())
+                .build();
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(10);
+    }
+
 }

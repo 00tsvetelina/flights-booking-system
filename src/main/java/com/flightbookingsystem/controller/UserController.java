@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -38,6 +39,15 @@ public class UserController {
                         .map(user, UserDto.class))
                 .toList();
         return ResponseEntity.ok(userDtos);
+    }
+
+    // fetch user by  username
+    @GetMapping(value = "/user")
+    // http://localhost:8080/api/admin/users/user?username=userName
+    public ResponseEntity<UserDto> loadUserByUsername(@RequestParam("username") String userName){
+        UserDetails user = userService.loadUserByUsername(userName);
+        UserDto userDto = modelMapper.map(user, UserDto.class);
+        return ResponseEntity.ok(userDto);
     }
 
     // fetch user by userId
@@ -75,5 +85,7 @@ public class UserController {
         return ResponseEntity.ok(userDto);
     }
 
+//    @RequestMapping("/login")
+//    public
 
 }
