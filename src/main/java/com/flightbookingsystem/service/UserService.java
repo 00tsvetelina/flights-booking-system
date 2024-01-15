@@ -1,9 +1,15 @@
 package com.flightbookingsystem.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flightbookingsystem.dto.MyUserPrincipal;
 import com.flightbookingsystem.model.User;
 import com.flightbookingsystem.repository.UserRepository;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import jakarta.transaction.Transactional;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,6 +22,8 @@ import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -53,6 +61,28 @@ public class UserService implements UserDetailsService {
 
     }
 
+    @Transactional
+    public User disableUser(Integer userId) {
+        User disabledUser = userRepository.getUserById(userId)
+                .orElseThrow(()->new IllegalArgumentException(
+                        String.format("User with id: %d does not exist.", userId)
+                ));
+        disabledUser.setIsEnabled(Boolean.FALSE);
+        return userRepository.save(disabledUser);
+
+    }
+
+    @Transactional
+    public User enableUser(Integer userId) {
+        User disabledUser = userRepository.getUserById(userId)
+                .orElseThrow(()->new IllegalArgumentException(
+                        String.format("User with id: %d does not exist.", userId)
+                ));
+        disabledUser.setIsEnabled(Boolean.TRUE);
+        return userRepository.save(disabledUser);
+
+    }
+
     // edit user
     @Transactional
     public User editUser(Integer userId, User updatedUser){
@@ -62,11 +92,11 @@ public class UserService implements UserDetailsService {
         if(result.isPresent()){
             user = result.get();
 
-            user.setFirstAndLastNames(updatedUser.getFirstAndLastNames());
-            user.setUserName(updatedUser.getUserName());
-            user.setRoles(updatedUser.getRoles());
-            user.setEmail(updatedUser.getEmail());
-            user.setPassword(updatedUser.getPassword());
+//            user.setFirstAndLastNames(updatedUser.getFirstAndLastNames());
+//            user.setUserName(updatedUser.getUserName());
+//            user.setRoles(updatedUser.getRoles());
+//            user.setEmail(updatedUser.getEmail());
+//            user.setPassword(updatedUser.getPassword());
             user.setIsEnabled(updatedUser.getIsEnabled());
         } else {
             throw  new IllegalArgumentException("No existing users with id " + userId);
@@ -90,10 +120,19 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return this.userRepository.findByuserName(username) // find user and db
+        return this.userRepository.findByuserName(username) // find user from db
                 .map(MyUserPrincipal::new) // if found, wrap the returned user instance in a MyUserPrincipal instance
                 .orElseThrow(()-> new UsernameNotFoundException(String.format("Username: %s cannot be found", username))
                         // or else throw new UNFE and format it into string value
                 );
+    }
+
+    public boolean isUserAuthenticated(String username) {
+        try {
+            this.loadUserByUsername(username);
+            return true;
+        } catch (UsernameNotFoundException ex) {
+            return false;
+        }
     }
 }

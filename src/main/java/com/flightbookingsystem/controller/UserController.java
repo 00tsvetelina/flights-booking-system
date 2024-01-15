@@ -1,9 +1,14 @@
 package com.flightbookingsystem.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.flightbookingsystem.dto.TicketDto;
 import com.flightbookingsystem.dto.UserDto;
+import com.flightbookingsystem.dto.UserInputDto;
 import com.flightbookingsystem.model.User;
 import com.flightbookingsystem.service.UserService;
+import com.github.fge.jsonpatch.JsonPatch;
+import com.github.fge.jsonpatch.JsonPatchException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,8 +47,8 @@ public class UserController {
     }
 
     // fetch user by  username
-    @GetMapping(value = "/user")
-    // http://localhost:8080/api/admin/users/user?username=userName
+    @GetMapping(value = "/load")
+    // http://localhost:8080/api/admin/users/load?username=userName
     public ResponseEntity<UserDto> loadUserByUsername(@RequestParam("username") String userName){
         UserDetails user = userService.loadUserByUsername(userName);
         UserDto userDto = modelMapper.map(user, UserDto.class);
@@ -60,21 +65,36 @@ public class UserController {
 
     //create a user
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
-        User entity = modelMapper.map(userDto, User.class);
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserInputDto userInputDto){
+        User entity = modelMapper.map(userInputDto, User.class);
         entity = userService.addUser(entity);
         UserDto responseDto = modelMapper.map(entity, UserDto.class);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     // edit user
-    @PutMapping(value = "/{userId}")
-    public ResponseEntity<UserDto> editUser(@PathVariable ("userId") Integer userId,
-                                            @Valid @RequestBody UserDto userDto){
-        User entity = modelMapper.map(userDto, User.class);
-        User updatedUser = userService.editUser(userId, entity);
-        UserDto responseDto = modelMapper.map(updatedUser, UserDto.class);
-        return ResponseEntity.ok(responseDto);
+   // TODO make ban user
+//    @PutMapping(value = "/{userId}")
+//    public ResponseEntity<UserDto> editUser(@PathVariable ("userId") Integer userId,
+//                                            @Valid @RequestBody UserDto userDto){
+//        User entity = modelMapper.map(userDto, User.class);
+//        User updatedUser = userService.editUser(userId, entity);
+//        UserDto responseDto = modelMapper.map(updatedUser, UserDto.class);
+//        return ResponseEntity.ok(responseDto);
+//    }
+
+    @PatchMapping(value = "/disable/{userId}")
+    public ResponseEntity<UserDto> disableUser(@PathVariable("userId") Integer userId) {
+        User disableUser = userService.disableUser(userId);
+        UserDto disabledUserDto = modelMapper.map(disableUser, UserDto.class);
+        return ResponseEntity.ok(disabledUserDto);
+    }
+
+    @PatchMapping(value = "/enable/{userId}")
+    public ResponseEntity<UserDto> enableUser(@PathVariable("userId") Integer userId) {
+        User enabledUser = userService.enableUser(userId);
+        UserDto enabledUserDto = modelMapper.map(enabledUser, UserDto.class);
+        return ResponseEntity.ok(enabledUserDto);
     }
 
     // delete user
@@ -85,7 +105,12 @@ public class UserController {
         return ResponseEntity.ok(userDto);
     }
 
-//    @RequestMapping("/login")
-//    public
+    // fetch user by  username
+    @GetMapping(value = "/login")
+    public ResponseEntity<Boolean> authenticateUser(@RequestParam("username") String userName){
+        UserDetails fetchedUser =  userService.loadUserByUsername(userName);
+
+        return ResponseEntity.ok(this.userService.isUserAuthenticated(userName));
+    }
 
 }

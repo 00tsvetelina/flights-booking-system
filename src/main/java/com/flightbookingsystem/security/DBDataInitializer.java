@@ -20,15 +20,16 @@ public class DBDataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-//        User abc = new User();
-//        abc.setUserName("abc");
-//        abc.setRoles(List.of("admin"));
-//        abc.setEmail("admin@ab.cd");
-//        abc.setPassword("123456");
-//        abc.setIsEnabled(true);
-
-//        this.userService.addUser(abc);
-//        this.userService.deleteUser(25);
+//        User user = new User();
+//        user.setFirstAndLastNames("admin");
+//        user.setUserName("my_admin");
+//        user.setRoles(List.of("admin"));
+//        user.setEmail("my_admin@fbs.mgt");
+//        user.setPassword("123456");
+//        user.setIsEnabled(true);
+//
+//        this.userService.addUser(user);
+//        this.userService.deleteUser(29);
 //        System.out.println("admin: " + abc);
 //        System.out.println("admin: " + abc.getRoles());
 

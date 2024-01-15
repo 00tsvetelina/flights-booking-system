@@ -19,8 +19,8 @@ public class UserDto {
 
     private Integer id;
 
-    @NotNull(message = "email is mandatory")
-    @NotBlank(message = "email is mandatory")
+    @NotNull(message = "full name is mandatory")
+    @NotBlank(message = "full name is mandatory")
     @Size(min = 6, max = 60, message = "fullName must be between 6 and 60 characters")
     private String firstAndLastNames;
 
@@ -34,10 +34,10 @@ public class UserDto {
     @Size(min = 3, max = 15, message = "userName must be between 6 and 15 characters")
     private String userName;
 
-    @NotNull(message = "password is mandatory")
-    @NotBlank(message = "password is mandatory")
-    @Size(min = 6, max = 16, message = "password must be between 6 and 16 characters")
-    private String password;
+//    @NotNull(message = "password is mandatory")
+//    @NotBlank(message = "password is mandatory")
+//    @Size(min = 6, max = 16, message = "password must be between 6 and 16 characters")
+//    private String password;
 
     private Boolean isEnabled;
 

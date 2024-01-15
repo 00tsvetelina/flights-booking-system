@@ -28,6 +28,14 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         .requestMatchers(HttpMethod.GET, this.baseUrl).permitAll()
+                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/users/login/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, this.baseUrl + " /users/load/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, this.baseUrl+ "/users").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, this.baseUrl+ "/users//disable/**").hasAuthority("ROLE_admin")
+                        .requestMatchers(HttpMethod.PATCH, this.baseUrl+ "/users//enable/**").hasAuthority("ROLE_admin")
+                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/users/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, this.baseUrl + "/users/**").hasAuthority("ROLE_admin")
                         .requestMatchers(HttpMethod.GET, this.baseUrl + "/flights").permitAll()
                         .requestMatchers(HttpMethod.GET, this.baseUrl + "/flights/**").hasAuthority("ROLE_admin")
                         .requestMatchers(HttpMethod.POST, this.baseUrl + "/add-flight").hasAuthority("ROLE_admin")
@@ -38,21 +46,17 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, this.baseUrl + "/add-plane").hasAuthority("ROLE_admin")
                         .requestMatchers(HttpMethod.PUT, this.baseUrl + "/edit-plane/**").hasAuthority("ROLE_admin")
                         .requestMatchers(HttpMethod.DELETE, this.baseUrl + "/planes/**").hasAuthority("ROLE_admin")
-//                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/promos").hasAuthority("ROLE_admin")
                         .requestMatchers(HttpMethod.GET, this.baseUrl + "/promos/**").hasAuthority("ROLE_admin")
                         .requestMatchers(HttpMethod.POST, this.baseUrl + "/add-promo").hasAuthority("ROLE_admin")
                         .requestMatchers(HttpMethod.PUT, this.baseUrl + "/edit-promo/**").hasAuthority("ROLE_admin")
                         .requestMatchers(HttpMethod.DELETE, this.baseUrl + "/promos/**").hasAuthority("ROLE_admin")
-                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/users").hasAuthority("ROLE_admin")
-                        .requestMatchers(HttpMethod.GET, this.baseUrl + "/users/**").hasAuthority("ROLE_admin")
-
                         .anyRequest().authenticated()
                 )
                 .cors(cors -> cors
                         .configurationSource(request -> {
                             CorsConfiguration config = new CorsConfiguration();
                             config.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-                            config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+                            config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));
                             config.setAllowedHeaders(Arrays.asList("*"));
                             config.setAllowCredentials(true);
                             return config;
