@@ -42,10 +42,6 @@ public class TicketDto {
 
     private User user;
 
-    @NotNull
-    @NotBlank
-    private String userName;
-
     @NotBlank
     private Float ticketPrice;
 

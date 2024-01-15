@@ -65,7 +65,7 @@ public class Ticket {
     private Float ticketPrice;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name="promo_ticket",
             joinColumns = @JoinColumn(name = "ticket_id", referencedColumnName = "id"),

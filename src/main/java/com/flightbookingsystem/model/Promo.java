@@ -58,7 +58,7 @@ public class Promo {
     @Column(name="single_use",nullable = false)
     private Boolean singleUse;
 
-    @ManyToMany(mappedBy = "promos")
+    @ManyToMany(mappedBy = "promos", fetch = FetchType.EAGER)
     private List<Ticket> tickets;
 
 

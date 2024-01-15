@@ -73,8 +73,8 @@ public class TicketService {
     @Transactional
     public Ticket deleteTicket(Integer ticketId) {
         Optional<Ticket> result = ticketRepository.getTicketById(ticketId);
-        if(result.isEmpty()){
-            throw  new IllegalArgumentException(String.format("Object with id: %d cannot be found", ticketId));
+        if (result.isEmpty()) {
+            throw new IllegalArgumentException(String.format("Object with id: %d cannot be found", ticketId));
         }
 
         Ticket ticket = result.get();
