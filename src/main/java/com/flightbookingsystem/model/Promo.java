@@ -23,9 +23,6 @@ public class Promo {
     @Column(name="percent_off", nullable = false)
     private Integer percentOff;
 
-    @Column(name="duration_start", nullable = false)
-    private LocalDate durationStart;
-
     @Column(name="duration_end", nullable = false)
     private LocalDate durationEnd;
 
