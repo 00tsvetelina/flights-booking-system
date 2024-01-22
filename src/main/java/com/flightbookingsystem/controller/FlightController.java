@@ -2,13 +2,9 @@ package com.flightbookingsystem.controller;
 import com.flightbookingsystem.dto.FlightDto;
 import com.flightbookingsystem.model.Flight;
 import com.flightbookingsystem.service.FlightService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,12 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/admin/flights")
@@ -35,7 +27,6 @@ public class FlightController {
         this.flightService = flightService;
     }
 
-    // fetch all flights
     @GetMapping
     public ResponseEntity<List<FlightDto>> getFlights(){
         List<FlightDto> flightDtos = flightService.getAllFlights()
@@ -45,7 +36,6 @@ public class FlightController {
         return ResponseEntity.ok(flightDtos);
     }
 
-    // fetch flight by id
     @GetMapping(value = "/{flightId}")
     public ResponseEntity<FlightDto> findFlightById(@PathVariable("flightId") Integer flightId) {
 
@@ -54,7 +44,6 @@ public class FlightController {
         return ResponseEntity.ok(flightDto);
     }
 
-    // create flight
     @PostMapping
     public ResponseEntity<FlightDto> createFlight(@RequestBody FlightDto flightDto) {
         Flight entity = modelMapper.map(flightDto, Flight.class);
@@ -63,7 +52,6 @@ public class FlightController {
         return ResponseEntity.ok(responseDto);
     }
 
-    // edit flight
     @PutMapping(value = "/{flightId}")
     public ResponseEntity<Flight> updateFlight(@PathVariable("flightId") Integer flightId,
                                                @RequestBody Flight flightDTO) {
@@ -79,6 +67,5 @@ public class FlightController {
 
         return ResponseEntity.ok(deletedFlight);
     }
-
 
 }

@@ -30,7 +30,6 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
-    // fetch all tickets
     @GetMapping
     public ResponseEntity<List<TicketDto>> getAllTickets() {
         List<TicketDto> ticketDtos = ticketService.getAllTickets()
@@ -40,7 +39,6 @@ public class TicketController {
         return ResponseEntity.ok(ticketDtos);
     }
 
-    // fetch ticket by ticketId
     @GetMapping(value = "/{ticketId}")
     public ResponseEntity<TicketDto> findTicketById(@PathVariable("ticketId") Integer ticketId){
         Ticket ticket = ticketService.getTicketById(ticketId);
@@ -48,7 +46,6 @@ public class TicketController {
         return ResponseEntity.ok(ticketDto);
     }
 
-    // create ticket
     @PostMapping
     public ResponseEntity<TicketDto> createTicket(@RequestBody TicketDto ticketDto) {
         Ticket entity = modelMapper.map(ticketDto, Ticket.class);
@@ -57,17 +54,15 @@ public class TicketController {
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
-    // edit ticket
     @PutMapping(value = "/{ticketId}")
     public ResponseEntity<TicketDto> editTicket(@PathVariable("ticketId") Integer ticketId,
-                                             @RequestBody TicketDto ticketDto) {
+                                                @RequestBody TicketDto ticketDto) {
         Ticket entity = modelMapper.map(ticketDto, Ticket.class);
         Ticket updatedTicket = ticketService.editTicket(ticketId, entity);
         TicketDto responseDto = modelMapper.map(updatedTicket, TicketDto.class);
         return ResponseEntity.ok(responseDto);
     }
 
-    // delete promo
     @RequestMapping(value = "/{ticketId}", method = RequestMethod.DELETE)
     public ResponseEntity<TicketDto> deleteTicket(@PathVariable("ticketId") Integer ticketId){
         Ticket deletedTicket = ticketService.deleteTicket(ticketId);

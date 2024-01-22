@@ -2,7 +2,6 @@ package com.flightbookingsystem.controller;
 
 
 import com.flightbookingsystem.dto.PlaneDto;
-
 import com.flightbookingsystem.model.Plane;
 import com.flightbookingsystem.service.PlaneService;
 import org.modelmapper.ModelMapper;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 @RestController
@@ -31,7 +29,6 @@ public class PlaneController {
     }
 
 
-    // fetch all planes
     @GetMapping
     public ResponseEntity<List<PlaneDto>> getPlanes(){
         List<PlaneDto> planeDtos = planeService.getAllPlanes()
@@ -42,7 +39,6 @@ public class PlaneController {
         return ResponseEntity.ok(planeDtos);
     }
 
-    // fetch plane by id
     @GetMapping(value = "/{planeId}")
     public ResponseEntity<PlaneDto> getPlaneById(@PathVariable Integer planeId){
         Plane plane = planeService.getPlaneById(planeId);
@@ -50,7 +46,6 @@ public class PlaneController {
         return ResponseEntity.ok(planeDto);
     }
 
-    // create plane
     @PostMapping
     public ResponseEntity<PlaneDto> createPlane(@RequestBody PlaneDto planeDto) {
         Plane entity = modelMapper.map(planeDto, Plane.class);
@@ -60,17 +55,15 @@ public class PlaneController {
     }
 
 
-    // edit plane
     @PutMapping(value = "/{planeId}")
     public ResponseEntity<PlaneDto> updatePlane(@PathVariable("planeId") Integer planeId,
-                                             @RequestBody PlaneDto planeDto) {
+                                                @RequestBody PlaneDto planeDto) {
         Plane entity = modelMapper.map(planeDto, Plane.class);
         Plane updatedPlane = planeService.editPlane(planeId, entity);
         PlaneDto responseDto = modelMapper.map(updatedPlane, PlaneDto.class);
         return ResponseEntity.ok(responseDto);
     }
 
-    // delete plane
     @RequestMapping(value = "/{planeId}", method = RequestMethod.DELETE)
     public ResponseEntity<PlaneDto> deletePlane(@PathVariable("planeId") Integer planeId){
         Plane deletedPlane = planeService.deletePlane(planeId);

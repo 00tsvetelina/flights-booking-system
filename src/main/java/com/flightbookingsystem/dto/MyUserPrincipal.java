@@ -1,19 +1,16 @@
 package com.flightbookingsystem.dto;
 
 import com.flightbookingsystem.model.User;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.util.StringUtils;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.Collection;
 
-public class MyUserPrincipal implements UserDetails {
+@Getter
+public class MyUserPrincipal implements UserDetails  {
 
-    private User user;
+    private final User user;
 
     public MyUserPrincipal(User user) {
         this.user = user;
@@ -23,9 +20,7 @@ public class MyUserPrincipal implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.user.getRoles()
                 .stream()
-                // add "ROLE_" prefix to each role name
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                // convert to a list
                 .toList();
     }
 
@@ -57,10 +52,6 @@ public class MyUserPrincipal implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.user.getIsEnabled();
-    }
-
-    public User getUser() {
-        return user;
     }
 
 }

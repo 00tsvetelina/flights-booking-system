@@ -1,13 +1,12 @@
 package com.flightbookingsystem.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.flightbookingsystem.model.Flight;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
 
 @AllArgsConstructor
@@ -20,7 +19,6 @@ public class PlaneDto {
     @NotNull
     @NotBlank
     private String model;
-
     private List<Flight> flights;
 
 }

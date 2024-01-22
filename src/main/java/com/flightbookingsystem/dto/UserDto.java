@@ -1,17 +1,18 @@
 package com.flightbookingsystem.dto;
 
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class UserDto {
 
@@ -33,11 +34,6 @@ public class UserDto {
     @NotBlank(message = "userName is mandatory")
     @Size(min = 3, max = 15, message = "userName must be between 6 and 15 characters")
     private String userName;
-
-//    @NotNull(message = "password is mandatory")
-//    @NotBlank(message = "password is mandatory")
-//    @Size(min = 6, max = 16, message = "password must be between 6 and 16 characters")
-//    private String password;
 
     private Boolean isEnabled;
 

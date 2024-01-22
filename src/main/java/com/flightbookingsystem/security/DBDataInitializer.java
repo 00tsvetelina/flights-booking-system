@@ -29,10 +29,6 @@ public class DBDataInitializer implements CommandLineRunner {
 //        user.setIsEnabled(true);
 //
 //        this.userService.addUser(user);
-//        this.userService.deleteUser(29);
-//        System.out.println("admin: " + abc);
-//        System.out.println("admin: " + abc.getRoles());
-
 
     }
 }

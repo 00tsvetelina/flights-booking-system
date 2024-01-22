@@ -1,19 +1,17 @@
 package com.flightbookingsystem.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class FlightDto {
+public class FlightDto  {
 
     private Integer id;
 
@@ -23,11 +21,11 @@ public class FlightDto {
 
     @NotNull
     @NotBlank
-    private  String origin;
+    private String origin;
 
     @NotNull
     @NotBlank
-    private  String destination;
+    private String destination;
 
     @NotNull
     @NotBlank

@@ -1,10 +1,9 @@
 package com.flightbookingsystem.model;
 
-
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
 import java.util.List;
 
 @NoArgsConstructor
@@ -12,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name="user")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -20,7 +20,7 @@ public class User {
     @Column(name = "full_name", nullable = false)
     private String firstAndLastNames;
 
-    @Column(name="email", unique = true, nullable = false)
+    @Column(name="email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "user_name", nullable = false, unique = true)

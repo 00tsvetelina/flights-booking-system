@@ -1,16 +1,12 @@
 package com.flightbookingsystem.controller;
 
 import com.flightbookingsystem.dto.PromoDto;
-import com.flightbookingsystem.dto.TicketDto;
 import com.flightbookingsystem.model.Promo;
 import com.flightbookingsystem.service.PromoService;
-import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +30,6 @@ public class PromoController {
         this.promoService = promoService;
     }
 
-    // fetch all promos
     @GetMapping
     public ResponseEntity<List<PromoDto>> getAllPromos() {
         List<PromoDto> promoDtos = promoService.getAllPromos()
@@ -43,8 +38,6 @@ public class PromoController {
                 .toList();
         return ResponseEntity.ok(promoDtos);
     }
-
-    // fetch promo by promoId
     @GetMapping(value = "/{promoId}")
     public ResponseEntity<PromoDto> findPromoById(@PathVariable("promoId") Integer promoId){
         Promo promo = promoService.getPromoById(promoId);
@@ -53,7 +46,6 @@ public class PromoController {
     }
 
 
-    // create promo
     @PostMapping
     public ResponseEntity<PromoDto> createPromo(@RequestBody PromoDto promoDto) {
         Promo entity = modelMapper.map(promoDto, Promo.class);
@@ -62,7 +54,6 @@ public class PromoController {
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
-    // edit promo
     @PutMapping(value = "/{promoId}")
     public ResponseEntity<PromoDto> updatePromo(@PathVariable("promoId") Integer promoId,
                                                 @RequestBody PromoDto promoDTO) {
@@ -72,7 +63,6 @@ public class PromoController {
         return ResponseEntity.ok(responseDto);
     }
 
-    // delete plane
     @RequestMapping(value = "/{promoId}", method = RequestMethod.DELETE)
     public ResponseEntity<PromoDto> deletePromo(@PathVariable("promoId") Integer promoId){
         Promo deletedPromo = promoService.deletePromo(promoId);
