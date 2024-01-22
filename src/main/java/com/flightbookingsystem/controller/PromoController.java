@@ -38,13 +38,13 @@ public class PromoController {
                 .toList();
         return ResponseEntity.ok(promoDtos);
     }
+
     @GetMapping(value = "/{promoId}")
     public ResponseEntity<PromoDto> findPromoById(@PathVariable("promoId") Integer promoId){
         Promo promo = promoService.getPromoById(promoId);
         PromoDto promoDto = modelMapper.map(promo, PromoDto.class);
         return ResponseEntity.ok(promoDto);
     }
-
 
     @PostMapping
     public ResponseEntity<PromoDto> createPromo(@RequestBody PromoDto promoDto) {
@@ -55,8 +55,7 @@ public class PromoController {
     }
 
     @PutMapping(value = "/{promoId}")
-    public ResponseEntity<PromoDto> updatePromo(@PathVariable("promoId") Integer promoId,
-                                                @RequestBody PromoDto promoDTO) {
+    public ResponseEntity<PromoDto> updatePromo(@PathVariable("promoId") Integer promoId, @RequestBody PromoDto promoDTO) {
         Promo entity = modelMapper.map(promoDTO, Promo.class);
         Promo updatedPromo = promoService.editPromo(promoId, entity);
         PromoDto responseDto = modelMapper.map(updatedPromo, PromoDto.class);

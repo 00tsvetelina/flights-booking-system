@@ -39,7 +39,6 @@ public class TicketService {
     @Transactional
     public Ticket editTicket(Integer ticketId, Ticket updatedTicket) {
         Ticket ticket = getTicketById(ticketId);
-
         ticket.setFlight(updatedTicket.getFlight());
         ticket.setDestination(updatedTicket.getDestination());
         ticket.setDepartureTime(updatedTicket.getDepartureTime());
@@ -49,7 +48,6 @@ public class TicketService {
         ticket.setUser(updatedTicket.getUser());
         ticket.setTicketPrice(updatedTicket.getTicketPrice());
         ticket.setPromos(updatedTicket.getPromos());
-
         return ticketRepository.save(ticket);
     }
 

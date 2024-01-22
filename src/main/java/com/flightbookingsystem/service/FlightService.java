@@ -42,9 +42,7 @@ public class FlightService {
 
     @Transactional
     public Flight editFlight(Integer flightId, Flight updatedFlight) {
-
         Flight flight = getFlightById(flightId);
-
         List<Ticket> ticketList = ticketService.findAllByFlightIn(new ArrayList<>() {{
             add(flight);
         }});
@@ -61,28 +59,24 @@ public class FlightService {
         flight.setDelayInMins(updatedFlight.getDelayInMins());
         flight.setPrice(updatedFlight.getPrice());
         flight.setSeatsCount(seatsCount);
-
+        
         return flightRepository.save(flight);
     }
 
     @Transactional
     public Flight deleteFlights(Integer flightId)  {
         Flight flight = getFlightById(flightId);
-
         List<Ticket> ticketList = ticketService.findAllByFlightIn(new ArrayList<>() {{
             add(flight);
         }});
-
         if (!ticketList.isEmpty()) {
             throw new IllegalArgumentException("Flight with id " + flightId + " has active tickets");
         }
-
         flightRepository.delete(flight);
         return flight;
     }
 
     public List<Flight> findAllByPlaneIn(List<Plane> planes) {
-
         return flightRepository.findAllByPlaneIn(planes);
     }
 

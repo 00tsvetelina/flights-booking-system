@@ -3,7 +3,6 @@ package com.flightbookingsystem.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
@@ -49,4 +48,5 @@ public class Ticket  {
             inverseJoinColumns = @JoinColumn(name = "promo_id", referencedColumnName = "id")
     )
     private List<Promo> promos;
+
 }

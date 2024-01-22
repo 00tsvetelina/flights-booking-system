@@ -1,6 +1,5 @@
 package com.flightbookingsystem.controller;
 
-
 import com.flightbookingsystem.dto.PlaneDto;
 import com.flightbookingsystem.model.Plane;
 import com.flightbookingsystem.service.PlaneService;
@@ -28,7 +27,6 @@ public class PlaneController {
         this.planeService = planeService;
     }
 
-
     @GetMapping
     public ResponseEntity<List<PlaneDto>> getPlanes(){
         List<PlaneDto> planeDtos = planeService.getAllPlanes()
@@ -53,7 +51,6 @@ public class PlaneController {
         PlaneDto responseDto = modelMapper.map(entity, PlaneDto.class);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
-
 
     @PutMapping(value = "/{planeId}")
     public ResponseEntity<PlaneDto> updatePlane(@PathVariable("planeId") Integer planeId,

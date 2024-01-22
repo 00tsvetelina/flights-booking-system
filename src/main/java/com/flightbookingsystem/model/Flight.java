@@ -1,9 +1,7 @@
 package com.flightbookingsystem.model;
 
 import jakarta.persistence.*;
-
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 

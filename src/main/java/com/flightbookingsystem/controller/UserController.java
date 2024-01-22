@@ -56,7 +56,6 @@ public class UserController {
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
-
     @PatchMapping(value = "/disable/{userId}")
     public ResponseEntity<UserDto> disableUser(@PathVariable("userId") Integer userId) {
         User disableUser = userService.disableUser(userId);
@@ -81,7 +80,6 @@ public class UserController {
     @GetMapping(value = "/login")
     public ResponseEntity<Boolean> authenticateUser(@RequestParam("username") String userName){
         UserDetails fetchedUser =  userService.loadUserByUsername(userName);
-
         return ResponseEntity.ok(this.userService.isUserAuthenticated(userName));
     }
 

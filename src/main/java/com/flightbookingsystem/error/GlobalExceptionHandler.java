@@ -21,22 +21,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers,
                                                                   HttpStatusCode status, WebRequest request) {
         Map<String, String> errors = new HashMap<>();
-
         ex.getBindingResult().getAllErrors().forEach((error)->{
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-
         return new ResponseEntity<>(errors, status);
     }
 
     @ExceptionHandler(value = { java.lang.IllegalArgumentException.class })
-    protected ResponseEntity<String> handleConflict(RuntimeException ex) {
+    protected ResponseEntity<String> handleBadRequest(RuntimeException ex) {
         String message = ex.getMessage();
-    
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-       
     }
 
     @ExceptionHandler({UsernameNotFoundException.class, BadCredentialsException.class})

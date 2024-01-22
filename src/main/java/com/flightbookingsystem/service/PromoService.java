@@ -49,7 +49,6 @@ public class PromoService {
     public Promo deletePromo(Integer promoId) {
         Promo promo  = getPromoById(promoId);
         promoRepository.delete(promo);
-
         return promo;
     }
 

@@ -53,13 +53,12 @@ public class PlaneService {
     @Transactional
     public Plane deletePlane(Integer planeId) {
         Plane plane = getPlaneById(planeId);
-
         List<Flight> flightList = flightService.findAllByPlaneIn(new ArrayList<>(){{add(plane);}});
         if(!flightList.isEmpty()) {
             throw new IllegalArgumentException("Plane with id " + plane + " has active flights");
         }
-
         planeRepository.delete(plane);
         return plane;
     }
+
 }
