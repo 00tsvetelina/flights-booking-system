@@ -1,13 +1,11 @@
 package com.flightbookingsystem.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.flightbookingsystem.model.Flight;
-import com.flightbookingsystem.model.Promo;
-import com.flightbookingsystem.model.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
@@ -39,10 +37,10 @@ public class TicketDto {
     @NotBlank
     private String seat;
 
-    private User user;
+    private UserDto user;
 
     @NotBlank
     private Float ticketPrice;
 
-    private List<Promo> promos;
+    private List<PromoDto> promos;
 }

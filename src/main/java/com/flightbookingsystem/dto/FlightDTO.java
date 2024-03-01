@@ -37,6 +37,7 @@ public class FlightDto  {
     @NotNull
     @NotBlank
     private  Float price;
+
     @NotNull
     @NotBlank
     private  Integer seatsCount;

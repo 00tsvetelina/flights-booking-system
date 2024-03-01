@@ -23,7 +23,7 @@ public class FlightService {
     }
 
     public List<Flight> getAllFlights() {
-        return flightRepository.getAllFlights();
+        return flightRepository.findAll();
     }
 
     public Flight getFlightById(Integer flightId) {

@@ -1,6 +1,5 @@
 package com.flightbookingsystem.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,7 +19,6 @@ public class Plane {
     @Column(name="model", nullable = false)
     private String model;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "plane")
     private List<Flight> flights;
 

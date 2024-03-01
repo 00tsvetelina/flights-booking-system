@@ -1,6 +1,5 @@
-package com.flightbookingsystem.dto;
+package com.flightbookingsystem.model;
 
-import com.flightbookingsystem.model.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

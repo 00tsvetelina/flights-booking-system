@@ -1,6 +1,6 @@
 package com.flightbookingsystem.service;
 
-import com.flightbookingsystem.dto.MyUserPrincipal;
+import com.flightbookingsystem.model.MyUserPrincipal;
 import com.flightbookingsystem.model.User;
 import com.flightbookingsystem.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -25,7 +25,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> getAllUsers(){
-        return userRepository.getAllUsers();
+        return userRepository.findAll();
     }
 
     public User getUserById(Integer userId){

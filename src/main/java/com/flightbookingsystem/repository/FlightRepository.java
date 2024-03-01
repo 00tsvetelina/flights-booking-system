@@ -3,7 +3,6 @@ package com.flightbookingsystem.repository;
 import com.flightbookingsystem.model.Flight;
 import com.flightbookingsystem.model.Plane;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
@@ -12,8 +11,7 @@ import java.util.Optional;
 public interface FlightRepository extends JpaRepository<Flight, Integer> {
     Optional<Flight> getFlightById(Integer flightId);
 
-    @Query(value = "select * from flight", nativeQuery = true)
-    List<Flight> getAllFlights();
+    List<Flight> findAll();
 
     List<Flight> findAllByPlaneIn(List<Plane> planes);
 

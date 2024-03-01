@@ -18,7 +18,7 @@ public class PromoService {
     }
 
     public List<Promo> getAllPromos() {
-        return promoRepository.getAllPromos();
+        return promoRepository.findAll();
     }
 
     public Promo getPromoById(Integer promoId){

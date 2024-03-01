@@ -23,7 +23,7 @@ public class PlaneService {
     }
 
     public List<Plane> getAllPlanes(){
-        return planeRepository.getAllPlanes();
+        return planeRepository.findAll();
     }
 
     public Plane getPlaneById(Integer planeId) {

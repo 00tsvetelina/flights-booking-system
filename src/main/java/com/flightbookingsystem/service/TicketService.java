@@ -19,7 +19,7 @@ public class TicketService {
     }
 
     public List<Ticket> getAllTickets(){
-        return ticketRepository.getAllTickets();
+        return ticketRepository.findAll();
     }
 
     public Ticket getTicketById(Integer ticketId){
@@ -58,6 +58,7 @@ public class TicketService {
 
         return ticket;
     }
+
 
     List<Ticket> findAllByFlightIn(List<Flight> flights) {
         return ticketRepository.findAllByFlightIn(flights);
