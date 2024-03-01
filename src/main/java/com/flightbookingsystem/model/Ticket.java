@@ -1,6 +1,5 @@
 package com.flightbookingsystem.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,8 +39,8 @@ public class Ticket  {
     @Column(name="ticket_price", nullable = false)
     private Float ticketPrice;
 
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
+//    @JsonIgnore
+    @ManyToMany
     @JoinTable(
             name="promo_ticket",
             joinColumns = @JoinColumn(name = "ticket_id", referencedColumnName = "id"),

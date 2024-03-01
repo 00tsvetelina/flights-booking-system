@@ -42,5 +42,6 @@ public class TicketDto {
     @NotBlank
     private Float ticketPrice;
 
+    @JsonIgnore
     private List<PromoDto> promos;
 }
